@@ -4,3 +4,6 @@ seaborn
 ipykernel
 pandas
 kagglehub
+pyarrow
+fastparquet
+openpyxl
