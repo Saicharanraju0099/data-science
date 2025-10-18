@@ -8,3 +8,4 @@ pyarrow
 fastparquet
 openpyxl
 lxml
+sklearn
