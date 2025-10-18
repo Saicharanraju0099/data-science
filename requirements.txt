@@ -9,3 +9,4 @@ fastparquet
 openpyxl
 lxml
 sklearn
+imblearn
