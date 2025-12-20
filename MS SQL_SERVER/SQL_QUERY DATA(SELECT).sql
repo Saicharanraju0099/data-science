@@ -105,6 +105,34 @@ SELECT TOP 2 *
 FROM orders
 ORDER BY order_date DESC
 
+-- MULTI QUERIES --
+
+USE MyDatabase;
+SELECT * 
+FROM customers
+
+SELECT * 
+FROM orders
+
+-- STATIC QUERY --
+
+SELECT 123 AS STATIC_NUMBER 
+SELECT 'HELLO' AS STATIC_DATA
+
+SELECT 
+    id,
+    first_name,
+'NEW_CUSTOMER' AS CUSTOMER_TYPE
+FROM customers
+
+-- COOL SQL TECHNIQUES --
+/* HIGHLIGHT AND EXCUTE */
+
+SELECT *
+FROM customers
+WHERE country = 'Germany'
+
+SELECT * FROM orders
 
 
 
