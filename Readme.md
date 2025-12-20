@@ -14,7 +14,6 @@ A true data scientist doesn’t just write code — they think critically, inter
 
 It’s about learning to look at a messy dataset and see clarity. About understanding not just how to analyze data, but how to reason with it. Every script, every notebook here is another step toward becoming fluent in the language of data.
 
-Current Sections
 
 BASICS 🔤
 
@@ -74,6 +73,62 @@ AUTOMATION AND REPORTING ⚡
 
 Automating repetitive analysis tasks, generating dynamic reports, and integrating Python with dashboards or APIs to deliver continuous insights.
 
+SQL PRACTICE (IN PROGRESS) 🗄️
+
+This repository now also includes hands-on SQL practice as part of my data science learning journey.
+The SQL section focuses on query fundamentals, filtering, aggregation, sorting, and real-world database-style problems using customer and order datasets.
+
+This SQL work is actively being developed.
+
+SQL Progress Status 📌
+✅ Query Data (SELECT) — COMPLETED
+
+All fundamental data retrieval concepts have been practiced using realistic tables such as customers and orders.
+
+Covered concepts include:
+
+SELECT statements
+
+Filtering using WHERE
+
+Comparison and logical operators
+
+Sorting results using ORDER BY
+
+Removing duplicates with DISTINCT
+
+Aggregation functions (SUM, AVG, COUNT)
+
+Grouped analysis using GROUP BY
+
+Conditional aggregation with HAVING
+
+Limiting results using TOP
+
+Static queries and column aliasing
+
+Executing multiple queries in a single script
+
+This section focuses on reading and analyzing data, which is the core responsibility of data analysts.
+
+🚧 Data Definition Language (DDL) — STARTED
+
+Work has begun on DDL concepts, which deal with defining and managing database structures.
+
+Topics being explored include:
+
+CREATE statements
+
+Defining tables and columns
+
+Data types
+
+Primary keys
+
+Basic table structure design
+
+This phase focuses on how data is structured before analysis begins.
+
 Tech Stack ⚙️
 
 • Python
@@ -89,6 +144,8 @@ Tech Stack ⚙️
 • Seaborn
 
 • CSV and JSON file handling
+
+• SQL (MS SQL Server, MySQL)
 
 Purpose 🎯
 
