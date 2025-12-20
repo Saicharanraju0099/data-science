@@ -1,0 +1,15 @@
+-- MULTI QUERIES --
+
+USE MyDatabase;
+SELECT * 
+FROM customers
+
+SELECT * 
+FROM orders
+
+-- STATIC QUERY --
+
+SELECT 123 AS STATIC_NUMBER 
+
+
+
