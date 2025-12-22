@@ -1,5 +1,13 @@
 USE MyDatabase;
 SELECT * FROM customers
+CREATE TABLE persons(
+    id INT NOT NULL,
+    person_name VARCHAR(50) NOT NULL,
+    birth_date DATE,
+    phone VARCHAR(15) NOT NULL,
+    CONSTRAINT pk_persons PRIMARY KEY(id)
+)
+SELECT * FROM persons
 
 -- INSERT --
 INSERT INTO customers(id,first_name,country,score)
@@ -10,13 +18,78 @@ SELECT * FROM customers
 
 -- INSERT USING SELECT --
 /* INSERT DATA FROM 'customers' into 'persons' */
-
-INSERT INTO persons(id,person_name,birth_date,phone)
-SELECT 
+INSERT INTO persons(id, person_name, birth_date,phone)
+SELECT
 id,
 first_name,
 NULL,
 'Unknown'
 FROM customers
 SELECT * FROM persons
+
+-- UPDATE --
+/* CHANGE THE SCORE OF CUSTOMER WITH ID 6 TO 0 */
+BEGIN TRANSACTION;
+
+UPDATE customers
+SET score = 0
+WHERE id = 6;
+
+SELECT * FROM customers;
+ROLLBACK;
+UPDATE customers
+SET score = CASE id
+    WHEN 1 THEN 350
+    WHEN 2 THEN 900
+    WHEN 3 THEN 750
+    WHEN 4 THEN 500
+    WHEN 5 THEN 0
+    WHEN 6 THEN 0
+    WHEN 7 THEN 100
+    ELSE score
+END;
+SELECT id, first_name, score
+FROM customers;
+
+/* UPDATE THE CUSTOMER 7 COUNTRY TO UK */
+UPDATE customers
+SET country = 'UK'
+WHERE id = 7
+
+SELECT * 
+FROM customers
+
+/* UPDATE ALL CUSTOMERS WITH NULL SCORE BY SETTING THEIR SCORE TO 0 */
+UPDATE customers
+SET score = 0
+WHERE score IS NULL
+
+SELECT * 
+FROM customers
+
+-- DELETE --
+/* DELETE ALL THE CUSTOMERS WITH AN ID GREATER THAN 5 */
+
+DELETE FROM customers
+WHERE id > 5
+ 
+SELECT *
+FROM customers
+
+/* DELETE ALL DATA FROM THE PERSONS TABLE */
+TRUNCATE TABLE persons
+
+SELECT *
+FROM persons
+
+
+
+
+
+
+
+
+
+
+
 
