@@ -38,3 +38,34 @@ FROM customers AS C
 LEFT JOIN orders AS O
 ON C.id = O.customer_id
 WHERE O.customer_id IS NOT NULL
+
+-- CROSS JOIN --
+SELECT *
+FROM customers
+CROSS JOIN orders
+
+-- TASK USING MULTI JOIN --
+/* USING SALES DB, RETRIEVE A LIST OF ALL ORDERS, ALONG WITH THE RELATED 
+CUSTOMER, PRODUCT, AND EMPLOYEE DETAILS 
+FOR EACH ORDER, DISPLAY:
+ORDER ID, CUSTOMER NAME, PRODUCT NAME, SALES AMOUNT, PRODUCT PRICE, SALES PERSON'S NAME
+*/
+SELECT 
+    O.OrderID,
+    O.Sales,
+    C.FirstName AS CustomerFirstName,
+    c.LastName AS CustomerLastName,
+    P.Product AS ProductName,
+    P.Price,
+    E.FirstName AS EmployeeFirstName,
+    E.LastName AS EmployeeLastName
+FROM Sales.Orders AS O
+LEFT JOIN Sales.Customers AS C
+ON O.CustomerID = C.CustomerID
+LEFT JOIN Sales.Products AS P
+ON O.ProductID = P.ProductID
+LEFT JOIN Sales.Employees AS E
+ON O.SalesPersonID = E.EmployeeID
+
+
+
