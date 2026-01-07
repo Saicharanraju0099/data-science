@@ -1,0 +1,17 @@
+-- UNION SET OPERATOR --
+/* COMBINE THE DATA FROM EMPLOYEES AND CUSTOMERS INTO ONE TABLE */
+
+USE SalesDB;
+SELECT
+FirstName,
+LastName
+FROM Sales.Customers
+UNION
+SELECT 
+FirstName,
+LastName
+FROM Sales.Employees
+
+
+
+
