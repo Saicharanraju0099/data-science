@@ -1,0 +1,83 @@
+-- FORMAT AND CASTING --
+-- CONVERT FUNCTION --
+SELECT
+CONVERT(int, '123') AS [STRING TO INT CONVERT],
+CONVERT(date, '2025-01-24') AS [STRING TO DATE CONVERT],
+CreationTime,
+CONVERT(DATE,CreationTime) AS [DATETIME TO DATE CONVERT],
+CONVERT(VARCHAR, CreationTime, 32) AS [USA Std. Style:32],
+CONVERT(VARCHAR, CreationTime, 34) AS [EUROPE Std. Style:34]
+FROM Sales.Orders
+
+-- FORMAT AND CASTING --
+-- CAST FUNCTION --
+SELECT
+CAST('123' AS int) AS [STING TO INT],
+CAST(123 AS varchar) AS [INT TO STRING],
+CAST('2026-01-24' AS DATE) AS [STRING TO DATE],
+CAST('2026-01-24' AS DATETIME) AS [STRING TO DATE TIME],
+CreationTime,
+CAST(CreationTime AS date) AS [DATE TIME TO DATE]
+FROM Sales.Orders
+
+-- CALCULATIONS DATE AND TIME FUNCTIONS --
+-- DATEADD() --
+SELECT
+OrderID,
+OrderDate,
+DATEADD(DAY, -10, OrderDate) AS TenDaysBefore,
+DATEADD(MONTH, 2, OrderDate) AS ThreeMonthsLater,
+DATEADD(YEAR, 2, OrderDate) AS TwoYearsLater
+FROM Sales.Orders
+
+-- DATEDIFF() --
+/* CALCULATE THE AGE OF EMPLOYEES */
+SELECT
+EmployeeID,
+BirthDate,
+DATEDIFF(YEAR, BirthDate, GETDATE()) AS Age
+FROM Sales.Employees
+
+/* Find The Average Shipping Duration In Days For Each Month */
+SELECT
+MONTH(OrderDate) AS OrderDate,
+AVG(DATEDIFF(day, OrderDate, ShipDate)) AS AVGDAYTOSHIP
+FROM Sales.Orders
+GROUP BY MONTH(OrderDate)
+
+-- Time Gap Analysis --
+-- FIND THE NUMBER OF DAYS BETWEEN EACH ORDER AND THE PREVIOUS ORDER --
+SELECT
+OrderID,
+OrderDate AS CurrentOrderDate,
+LAG(OrderDate) OVER (ORDER BY OrderDate) as PreviousOrderDate,
+DATEDIFF(DAY,LAG(OrderDate) OVER (ORDER BY OrderDate), OrderDate) AS NoOfDays
+FROM  Sales.Orders
+
+-- VALIDATION DATE AND TIME FUNCTIONS --
+-- ISDATE() --
+
+SELECT
+ISDATE('123') DATECHECK1,
+ISDATE('2026-01-24') DATECHECK2,
+ISDATE('24-01-2026') DATECHECK2,
+ISDATE('2026') DATECHECK4,
+ISDATE('01') DATECHECK5
+
+
+
+SELECT
+    OrderDate,
+    ISDATE(OrderDate),
+    CASE WHEN ISDATE(OrderDate) = 1 THEN CAST(OrderDate as Date)
+          ELSE '9999-01-01'
+    END NewOrderDate
+
+FROM
+(
+    SELECT '2025-08-20' AS OrderDate UNION
+    SELECT '2025-08-21' AS OrderDate UNION
+    SELECT '2025-08-22' AS OrderDate UNION
+    SELECT '2025-08'
+)t
+WHERE ISDATE(OrderDate) = 0

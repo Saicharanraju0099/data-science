@@ -96,6 +96,36 @@ FROM Sales.Orders
 WHERE MONTH(OrderDate) = 2
 
 -- FORMAT AND CASTING --
+SELECT
+    OrderID,
+    CreationTime,
+    'DAY ' + FORMAT(CreationTime, 'ddd')  CustomFormat
+FROM Sales.Orders;
 
+-- Show Creation Time using the fallowing format:
+-- Day Wed Jan Q1 2025 12:34:56 PM --
 
+SELECT
+    OrderID,
+    CreationTime,
 
+    'Day ' +
+    LEFT(DATENAME(WEEKDAY, CreationTime), 3) + ' ' +
+    LEFT(DATENAME(MONTH, CreationTime), 3) + ' ' +
+    'Q' + CAST(DATEPART(QUARTER, CreationTime) AS varchar(1)) + ' ' +
+    CAST(YEAR(CreationTime) AS varchar(4)) + ' ' +
+    RIGHT('0' + CAST(
+        CASE 
+            WHEN DATEPART(HOUR, CreationTime) % 12 = 0 
+            THEN 12 
+            ELSE DATEPART(HOUR, CreationTime) % 12 
+        END AS varchar(2)
+    ), 2) + ':' +
+    RIGHT('0' + CAST(DATEPART(MINUTE, CreationTime) AS varchar(2)), 2) + ':' +
+    RIGHT('0' + CAST(DATEPART(SECOND, CreationTime) AS varchar(2)), 2) + ' ' +
+    CASE 
+        WHEN DATEPART(HOUR, CreationTime) >= 12 THEN 'PM'
+        ELSE 'AM'
+    END
+    AS CustomFormat
+FROM Sales.Orders;
