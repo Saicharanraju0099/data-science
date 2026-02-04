@@ -1,0 +1,19 @@
+-- Window Functions --
+/* FIND THE TOTAL SALES FOR EACH PRODUCT 
+ADDITIONALLY PROVIDE DETAILS SUCH orderID, order date */
+
+SELECT
+    OrderID,
+    OrderDate,
+    ProductID,
+    SUM(Sales) OVER(PARTITION BY ProductID) TotalSalesByProduct
+FROM Sales.Orders
+
+/* FIND THE TOTAL SALES ACROSS ALL ORDERS
+ADDITIONALLY PROVIDE DETAILS SUCH AS ORDER ID, ORDER DATE */
+SELECT
+OrderID,
+OrderDate,
+ProductID,
+SUM(Sales) OVER(PARTITION BY ProductID) TotalSales
+FROM Sales.Orders
