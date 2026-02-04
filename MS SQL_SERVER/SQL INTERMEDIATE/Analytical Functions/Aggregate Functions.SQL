@@ -1,6 +1,8 @@
+
+USE MyDatabase
 -- Aggregate Function --
 SELECT
-COUNT(*) AS total_number_of_orders 
+COUNT(*) AS total_number_of_orders
 FROM orders
 
 /* FIND THE TOTAL SALES OF ALL ORDERS */
