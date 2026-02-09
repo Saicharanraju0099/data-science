@@ -10,10 +10,127 @@ SELECT
 FROM Sales.Orders
 
 /* FIND THE TOTAL SALES ACROSS ALL ORDERS
+FIND THE TOTAL SALES FOR EACH PRODUCT
+FIND THE TOTAL SALES FOR EACH COMBINATION OF PRODUCT AND ORDER STATUS
 ADDITIONALLY PROVIDE DETAILS SUCH AS ORDER ID, ORDER DATE */
 SELECT
 OrderID,
 OrderDate,
 ProductID,
-SUM(Sales) OVER(PARTITION BY ProductID) TotalSales
+OrderStatus,
+Sales,
+SUM(Sales) OVER () TotalSales,
+SUM(Sales) OVER(PARTITION BY ProductID) SalesByProducts,
+SUM(Sales) OVER(PARTITION BY ProductID,OrderStatus) SalesByProductsAndStatus
+FROM Sales.Orders
+
+
+-- WINDOW FUNCTION ORDER BY --
+/* RANK EACH ORDER BASED ON THEIR SALES FROM HIGHEST TO LOWEST ADDITIONALLY
+PROVIDE DETAILS SUCH AS ORDER ID, ORDER DATE */
+SELECT
+    OrderID,
+    OrderDate,
+    Sales,
+    RANK() OVER(order by Sales DESC) RankSales
+FROM Sales.Orders
+
+/* CHECK WHETHER THE TABLE ORDERS CONTAIN ANY DUPLICATE ROWS */
+SELECT
+*
+FROM(
+    SELECT
+    OrderID,
+    COUNT(*) OVER(PARTITION BY OrderID) checkPK
+    FROM Sales.OrdersArchive
+)t WHERE checkPK > 1
+
+-- Aggregate sum() --
+SELECT
+OrderID,
+OrderDate,
+Sales,
+ProductID,
+SUM(Sales) OVER() Total_Sales,
+SUM(Sales) OVER(PARTITION BY ProductID)  SalesByProducts
+FROM Sales.Orders
+
+SELECT
+OrderID,
+ProductID,
+Sales,
+SUM(Sales) OVER() TotalSales,
+ROUND(cast(Sales as float) / SUM(Sales) OVER() * 100,2) percentage_of_total
+FROM Sales.Orders
+
+-- Aggregate AVG() --
+/* FIND THE AVERAGE SALES ACROSS ALL ORDERS
+AND FIND THE AVERAGE SALES FOR EACH PRODUCT
+ADDITIONALLY PROVIDE DETAILS SUCH AS ORDERID, ORDER DATE */
+
+SELECT
+OrderID,
+OrderDate,
+Sales,
+AVG(Sales) OVER() AVGSALES,
+AVG(Sales) OVER(PARTITION BY ProductID) AvgSalesByProducts
+FROM Sales.Orders
+
+/* FIND THE AVERAGE SCORE OF CUSTOMERS ADDITIONALLY PROVIDE DETAILS SUCH
+AS CUSTOMERID AND LAST NAME */
+SELECT
+CustomerID,
+LastName,
+Score,
+COALESCE(Score,0) customer_score,
+AVG(Score) OVER() avgScore
+FROM Sales.Customers
+
+/* FIND ALL ORDERS WHERE SALES ARE HIGHER THAN THE AVERAGE SALES ACROSS ALL ORDERS */
+SELECT
+*
+FROM(
+SELECT
+OrderID,
+ProductID,
+Sales,
+AVG(Sales) OVER() AVGSALES
+FROM Sales.Orders
+)t WHERE Sales > AVGSALES
+
+-- MIN AND MAX --
+/* FIND THE HIGHEST AND LOWEST SALES OF ALL ORDERS 
+FIND THE HIGHEST AND LOWEST SALES FOR EACH PRODUCT 
+ADDITIONALLY PROVIDE DETAILS SUCH AS ORDER ID, ORDER DATE */
+SELECT
+OrderID,
+OrderDate,
+ProductID,
+Sales,
+MAX(Sales) OVER() HighestSales,
+MIN(Sales) OVER() LowestSales,
+MAX(Sales) OVER(PARTITION BY ProductID) HighestSalesByProduct,
+MIN(Sales) OVER(PARTITION BY ProductID) LowestSalesByProduct
+FROM Sales.Orders
+
+/*  SHOW THE EMPLOYEES WHO HAVE HIGHEST SALARIES */
+SELECT
+*
+FROM(
+    SELECT
+    *,
+    MAX(Salary) OVER() HIGHEST_SALARY
+    FROM Sales.Employees
+)t WHERE Salary = HIGHEST_SALARY
+
+/* FIND THE DEVIATION OF EACH SALES FROM THE MINIMUM AND MAXIMUM SALES AMOUNTS */
+SELECT
+OrderID,
+OrderDate,
+ProductID,
+Sales,
+MAX(Sales) OVER() HighestSales,
+MIN(Sales) OVER() LowestSales,
+Sales - MIN(Sales) OVER() DeviationFromMin,
+MAX(Sales) OVER() - Sales DeviationFromMax
 FROM Sales.Orders
