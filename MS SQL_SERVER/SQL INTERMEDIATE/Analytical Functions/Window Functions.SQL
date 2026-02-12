@@ -134,3 +134,15 @@ MIN(Sales) OVER() LowestSales,
 Sales - MIN(Sales) OVER() DeviationFromMin,
 MAX(Sales) OVER() - Sales DeviationFromMax
 FROM Sales.Orders
+
+/* CALCULATE MOVING AVERAGE OF SALES FOR EACH PRODUCT OVER TIME */
+/* CALCULATE MOVING AVERAGE OF SALES FOR EACH PRODUCT OVER TIME, INCLUDING ONLY THE NEXT ORDER */
+SELECT
+OrderID,
+ProductID,
+OrderDate,
+Sales,
+AVG(Sales) OVER(PARTITION by ProductID)  AvgByProduct,
+AVG(Sales) OVER(PARTITION by ProductID order by OrderDate) MovingAVG,
+AVG(Sales) OVER(PARTITION by ProductID order by OrderDate ROWS BETWEEN CURRENT ROW AND 1 FOLLOWING) ROLLINGAVG
+FROM Sales.Orders
