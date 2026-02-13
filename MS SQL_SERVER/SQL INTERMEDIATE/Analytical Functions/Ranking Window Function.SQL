@@ -60,3 +60,39 @@ NTILE(2) OVER(order by Sales DESC) TWOBUCKET,
 NTILE(3) OVER(order by Sales DESC) THREEBUCKET,
 NTILE(4) OVER(order by Sales DESC) FOURBUCKET
 FROM Sales.Orders
+
+/* SEGMENT ALL ORDERS IN TO 3 CATEGORIES: HIGH, MEDIUM, AND LOW SALES */
+SELECT
+*,
+CASE WHEN Buckets = 1 THEN 'HIGH'
+     WHEN Buckets = 2 THEN 'MEDIUM'
+     WHEN Buckets = 3 THEN 'LOW'
+END SALESSEGEMENTATIONS
+FROM (
+SELECT
+OrderID,
+Sales,
+NTILE(3) OVER (ORDER by Sales DESC) Buckets
+FROM Sales.Orders
+)t
+
+-- In Order To Export The Data, Divide The Orders In To 2 Groups --
+SELECT
+NTILE(4) OVER (ORDER BY OrderID) BUCKETS,
+*
+FROM Sales.Orders
+
+-- RANK WINDOW FUNCTION --
+-- CUME_DIST --
+/* FIND THE PRODUCTS THAT FALL WITHIN THE HIGHEST 40% OF THEIR PRICES */
+SELECT
+*,
+CONCAT(DistRank * 100, '%') DistRankPercentage
+FROM (
+SELECT
+    Product,
+    Price,
+    CUME_DIST() OVER(ORDER BY Price DESC) DistRank
+FROM Sales.Products
+)t 
+WHERE DistRank <= 0.4
